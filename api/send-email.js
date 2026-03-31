@@ -1,5 +1,15 @@
 export default async function handler(req, res) {
   try {
+    const subject =
+      req.method === "POST" && req.body?.subject
+        ? req.body.subject
+        : "New notification from OpenClaw";
+
+    const text =
+      req.method === "POST" && req.body?.message
+        ? req.body.message
+        : "OpenClaw finished a task.";
+
     const response = await fetch(
       "https://api.agentmail.to/v0/inboxes/agreeablepath10%40agentmail.to/messages/send",
       {
@@ -10,8 +20,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           to: ["hello.aiatelier@gmail.com"],
-          subject: "It works 🚀",
-          text: "Your first email from Vercel + AgentMail",
+          subject,
+          text,
         }),
       }
     );
